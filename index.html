@@ -1,65 +1,154 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Hello, Snaps!</title>
-    <link rel="icon" type="image/svg" href="./images/icon.svg"/>
-  </head>
 
-  <body>
-    <h1>Hello, Snaps!</h1>
-    <details>
-      <summary>Instructions</summary>
-      <ul>
-        <li>First, click "Connect". Then, try out the other buttons!</li>
-        <li>Please note that:</li>
-        <ul>
-          <li>
-            The <code>snap.manifest.json</code> and <code>package.json</code> must be located in the server root directory..
-          </li>
-          <li>
-            The Snap bundle must be hosted at the location specified by the <code>location</code> field of <code>snap.manifest.json</code>.
-          </li>
-        </ul>
-      </ul>
-    </details>
-    <br/>
+<head>
+  <meta charset="utf-8">
+  <title>Near RPC Snap</title>
+  <link rel="stylesheet" href="./src/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="icon" type="image/svg" href="./images/icon.svg" />
+</head>
 
-    <button class="connect">Connect</button>
-    <button class="sendHello">Send Hello</button>
-  </body>
+<body>
 
-  <script>
-    const snapId = `local:${window.location.href}`;
 
-    const connectButton = document.querySelector('button.connect')
-    const sendButton = document.querySelector('button.sendHello')
+  <div class="container">
+    <div class="row">
+      <h2 class="text-primary">NEAR RPC SNAP</h2>
+    </div>
 
-    connectButton.addEventListener('click', connect)
-    sendButton.addEventListener('click', send)
+    <div class="row grey mb-2 p-2">
+      <small class="t-left">This Snap interacts with NEAR Protocol over <code>archival-rpc.testnet.near.org</code> NEAR
+        RPC API. As a first draft, it has limited number of view-functionalities. Please try out them below.</small>
+    </div>
 
-    // here we get permissions to interact with and install the snap
-    async function connect () {
-      await ethereum.request({
-        method: 'wallet_enable',
-        params: [{
-          wallet_snap: { [snapId]: {} },
+    <div class="col-12">
+      <button class="btn btn-primary w-100 my-2 connect">Connect Metamask</button>
+      <p>Please connect Metamask to interact.</p>
+    </div>
+
+
+
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Get NEAR Gas
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+          data-bs-parent="#accordionExample">
+          <div class="accordion-body t-left">
+            This function provides a current Gas value from the NEAR endpoint.
+            <button class="btn btn-outline-secondary getGas mt-2">Get current NEAR Gas</button>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            View NEAR Account Info
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+          data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse
+            plugin adds the appropriate classes that we use to style each element. These classes control the overall
+            appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom
+            CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the
+            <code>.accordion-body</code>, though the transition does limit overflow.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Call NEAR Contract Function
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+          data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon2">@example.com</span>
+              <input type="text" class="form-control" placeholder="Recipient's username"
+                aria-label="Recipient's username" aria-describedby="basic-addon2">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFour">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+            Next Steps
+          </button>
+        </h2>
+        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+          data-bs-parent="#accordionExample">
+          <div class="accordion-body t-left">
+            <a href="https://docs.near.org/api/rpc/introduction">NEAR RPC API</a>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item t-left px-0">Implement Send Transaction Functionality</li>
+              <li class="list-group-item t-left px-0">Request a Full Access Key</li>
+              <li class="list-group-item t-left px-0">Store the Full Access Key</li>
+            </ul>
+            <a href="https://docs.near.org/tools/near-api-js/quick-reference">NEAR API JS</a>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item t-left px-0">Integrate full functionality over <code>near-api-js</code>
+                (currently blocked)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</body>
+
+<script>
+  const snapId = `local:${window.location.href}`;
+
+  const connectButton = document.querySelector('button.connect')
+  const getGasButton = document.querySelector('button.getGas')
+
+  connectButton.addEventListener('click', connect)
+  getGasButton.addEventListener('click', getGas)
+
+  // here we get permissions to interact with and install the snap
+  async function connect() {
+    await ethereum.request({
+      method: 'wallet_enable',
+      params: [{
+        wallet_snap: { [snapId]: {} },
+      }]
+    })
+  }
+
+  // here we call the snap's "gas" method
+  async function getGas() {
+    try {
+      const response = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: [snapId, {
+          method: 'gas'
         }]
       })
+    } catch (err) {
+      console.error(err)
+      alert('Problem happened: ' + err.message || err)
     }
+  }
 
-    // here we call the snap's "hello" method
-    async function send () {
-      try {
-        const response = await ethereum.request({
-          method: 'wallet_invokeSnap',
-          params: [snapId, {
-            method: 'hello'
-          }]
-        })
-      } catch (err) {
-        console.error(err)
-        alert('Problem happened: ' + err.message || err)
-      }
-    }
-  </script>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </html>
