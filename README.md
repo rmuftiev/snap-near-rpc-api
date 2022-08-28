@@ -1,6 +1,4 @@
-# @metamask/snap-near-rpc
-
-SNAP Connection with NEAR Counter Example in Rust
+SNAP Connection with NEAR RPC API
 =================================
 
 ## Description
@@ -18,11 +16,20 @@ Clone the repo
 
 Go to folder
 `cd snap-near-rpc`
+
+Get exectutions rigths to delete some of unnecessary Snaps  dependencies
 `chmod +x ./scripts/cleanup.sh`
+
+Delete some of unnecessary Snaps  dependencies
 `./scripts/cleanup.sh`
+
+Install dependencies
 `yarn install`
-`yarn add @metamask/key-tree`
+
+Build project
 `yarn build`
+
+Run the localhost
 `yarn run serve`
 
 

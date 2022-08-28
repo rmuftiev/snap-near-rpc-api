@@ -20,7 +20,7 @@
 
     <div class="row grey mb-2 p-2">
       <small class="t-left">This Snap interacts with NEAR Protocol over <code>archival-rpc.testnet.near.org</code> NEAR
-        RPC API. As a first draft, it has limited number of view-functionalities. Please try out them below.</small>
+        RPC API. As a first draft, it has limited number of view-functionalities for NEAR Testnet. Please try them out below.</small>
     </div>
 
     <div class="col-12">
@@ -41,7 +41,7 @@
         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
           data-bs-parent="#accordionExample">
           <div class="accordion-body t-left">
-            This function provides a current Gas value from the NEAR endpoint.
+            This function provides a notification with current Gas value from the NEAR endpoint.
             <button class="btn btn-outline-secondary getGas mt-2">Get current NEAR Gas</button>
           </div>
         </div>
@@ -55,12 +55,10 @@
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
           data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse
-            plugin adds the appropriate classes that we use to style each element. These classes control the overall
-            appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom
-            CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the
-            <code>.accordion-body</code>, though the transition does limit overflow.
+          <div class="accordion-body t-left">
+            This function provides information about the NEAR account. Please type an account of interest below.
+            <input id="account" type="text" class="form-control" placeholder="NEAR Testnet account" aria-label="account">
+            <button class="btn btn-outline-secondary view mt-2">Get Account Information</button>
           </div>
         </div>
       </div>
@@ -118,9 +116,11 @@
 
   const connectButton = document.querySelector('button.connect')
   const getGasButton = document.querySelector('button.getGas')
+  const viewButton = document.querySelector('button.view')
 
   connectButton.addEventListener('click', connect)
   getGasButton.addEventListener('click', getGas)
+  viewButton.addEventListener('click', viewAccount)
 
   // here we get permissions to interact with and install the snap
   async function connect() {
@@ -139,6 +139,23 @@
         method: 'wallet_invokeSnap',
         params: [snapId, {
           method: 'gas'
+        }]
+      })
+    } catch (err) {
+      console.error(err)
+      alert('Problem happened: ' + err.message || err)
+    }
+  }
+
+  // here we call the snap's "viewAccount" method
+  async function viewAccount() {
+    let account = document.getElementById("account").value; 
+    try {
+      const response = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: [snapId, {
+          method: 'view',
+          accountId: account
         }]
       })
     } catch (err) {
