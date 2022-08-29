@@ -42,7 +42,7 @@
           data-bs-parent="#accordionExample">
           <div class="accordion-body t-left">
             This function provides a notification with current Gas value from the NEAR endpoint.
-            <button class="btn btn-outline-secondary getGas mt-2">Get current NEAR Gas</button>
+            <button class="btn btn-outline-secondary getGas mt-4">Get current NEAR Gas</button>
           </div>
         </div>
       </div>
@@ -57,8 +57,8 @@
           data-bs-parent="#accordionExample">
           <div class="accordion-body t-left">
             This function provides information about the NEAR account. Please type an account of interest below.
-            <input id="account" type="text" class="form-control" placeholder="NEAR Testnet account" aria-label="account">
-            <button class="btn btn-outline-secondary view mt-2">Get Account Information</button>
+            <input id="account1" type="text" class="form-control mt-2" placeholder="NEAR Testnet Account" aria-label="account1">
+            <button class="btn btn-outline-secondary view mt-4">Get Account Information</button>
           </div>
         </div>
       </div>
@@ -72,11 +72,12 @@
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
           data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon2">@example.com</span>
-              <input type="text" class="form-control" placeholder="Recipient's username"
-                aria-label="Recipient's username" aria-describedby="basic-addon2">
-
+            <div class="accordion-body t-left">
+              This method calls NEAR public function. Please type a testnet account, function name, and base-64-encoded arguments below. Default value for arguments is "e30=" which is equivalent to "{}" empty input parameters.
+              <input id="account2" type="text" class="form-control mt-2" placeholder="NEAR Testnet Account" aria-label="account2">
+              <input id="function" type="text" class="form-control" placeholder="Function Name" aria-label="function">
+              <input id="args" type="text" class="form-control" placeholder="Base-64-encoded Arguments" aria-label="args">
+              <button class="btn btn-outline-secondary call mt-4">Call public function</button>
             </div>
           </div>
         </div>
@@ -117,10 +118,12 @@
   const connectButton = document.querySelector('button.connect')
   const getGasButton = document.querySelector('button.getGas')
   const viewButton = document.querySelector('button.view')
+  const callButton = document.querySelector('button.call')
 
   connectButton.addEventListener('click', connect)
   getGasButton.addEventListener('click', getGas)
   viewButton.addEventListener('click', viewAccount)
+  callButton.addEventListener('click', callFunction)
 
   // here we get permissions to interact with and install the snap
   async function connect() {
@@ -149,13 +152,34 @@
 
   // here we call the snap's "viewAccount" method
   async function viewAccount() {
-    let account = document.getElementById("account").value; 
+    let account = document.getElementById("account1").value; 
     try {
       const response = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: [snapId, {
           method: 'view',
           accountId: account
+        }]
+      })
+    } catch (err) {
+      console.error(err)
+      alert('Problem happened: ' + err.message || err)
+    }
+  }
+
+
+  async function callFunction() {
+    let account2 = document.getElementById("account2").value; 
+    let funcName = document.getElementById("function").value;
+    let args = document.getElementById("args").value; 
+    try {
+      const response = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: [snapId, {
+          method: 'funcall',
+          accountId: account2,
+          functionName: funcName,
+          args64: args
         }]
       })
     } catch (err) {
